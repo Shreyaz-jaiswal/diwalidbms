@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VibeEra Accessories - Diwali Special</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+}
+
+body{
+    background:#121212;
+    color:#e0e0e0;
+}
+
+/* Header */
+header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:18px 5%;
+    background:#1a1a1a;
+    border-bottom: 1px solid #333;
+    box-shadow:0 4px 15px rgba(212,175,55,0.1);
+    position:sticky;
+    top:0;
+    z-index:100;
+}
+
+.logo{
+    font-size:28px;
+    font-weight:700;
+    color: #d4af37;
+    letter-spacing: 1px;
+}
+
+.nav-links{
+    display:flex;
+    gap:20px;
+}
+
+.nav-links a{
+    text-decoration:none;
+    color:#e0e0e0;
+    font-weight:500;
+    transition: color 0.3s;
+}
+
+.nav-links a:hover{
+    color: #d4af37;
+}
+
+/* Hero */
+.hero{
+    text-align:center;
+    padding:70px 20px;
+    background:linear-gradient(135deg,#1a1a1a,#2a2200);
+    border-bottom: 1px solid #333;
+}
+
+.hero h1{
+    font-size:42px;
+    margin-bottom:15px;
+    color: #ffdf73;
+}
+
+.hero p{
+    color:#ccc;
+    max-width:600px;
+    margin:auto;
+}
+
+/* Products */
+.products{
+    padding:50px 5%;
+}
+
+.products h2{
+    text-align:center;
+    margin-bottom:30px;
+    color: #d4af37;
+}
+
+.product-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:25px;
+}
+
+.card{
+    background:#1e1e1e;
+    border-radius:12px;
+    overflow:hidden;
+    border: 1px solid #333;
+    box-shadow:0 4px 15px rgba(0,0,0,.5);
+    transition:.3s;
+}
+
+.card:hover{
+    transform:translateY(-5px);
+    border-color: #d4af37;
+}
+
+.card img{
+    width:100%;
+    height:300px;
+    object-fit:cover;
+}
+
+.card-content{
+    padding:15px;
+    text-align:center;
+}
+
+.card-content h3 {
+    color: #fff;
+}
+
+.price{
+    font-size:20px;
+    font-weight:700;
+    margin:10px 0;
+    color: #ffdf73;
+}
+
+.rating{
+    color:#ffb400;
+    margin-bottom:10px;
+}
+
+button{
+    border:none;
+    background:#d4af37;
+    color:#121212;
+    padding:10px 18px;
+    border-radius:6px;
+    cursor:pointer;
+    font-weight: bold;
+    transition: background 0.3s;
+}
+
+button:hover{
+    background: #ffdf73;
+}
+
+/* Cart Preview & Checkout Form */
+.cart-preview{
+    background:#1e1e1e;
+    margin:40px 5%;
+    padding:25px;
+    border-radius:12px;
+    border: 1px solid #333;
+    box-shadow:0 4px 15px rgba(0,0,0,.5);
+}
+
+.cart-preview h2{
+    margin-bottom:15px;
+    color: #d4af37;
+}
+
+.cart-item{
+    display:flex;
+    justify-content:space-between;
+    padding:8px 0;
+    border-bottom:1px solid #333;
+    color: #ccc;
+}
+
+.total{
+    margin-top:15px;
+    font-size:22px;
+    font-weight:bold;
+    color: #ffdf73;
+}
+
+/* Form Styles */
+.checkout-form {
+    margin-top: 25px;
+    border-top: 2px dashed #444;
+    padding-top: 20px;
+}
+
+.checkout-form h3 {
+    margin-bottom: 15px;
+    color: #d4af37;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+    color: #ccc;
+}
+
+.form-group input, .form-group textarea {
+    width: 100%;
+    padding: 10px;
+    background: #121212;
+    border: 1px solid #444;
+    color: #fff;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+.cart-actions {
+    margin-top: 20px;
+    display: flex;
+    gap: 15px;
+}
+
+.cart-btn{
+    display:inline-block;
+    background:#333;
+    color:#fff;
+    text-decoration:none;
+    padding:10px 18px;
+    border-radius:6px;
+    text-align: center;
+}
+
+.checkout-btn {
+    background: #28a745;
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+/* About */
+.about{
+    padding:50px 5%;
+    text-align:center;
+    background: #181818;
+}
+
+.about h2 {
+    color: #d4af37;
+}
+
+.about p{
+    max-width:700px;
+    margin:auto;
+    color:#aaa;
+}
+
+/* Footer */
+footer{
+    background:#0a0a0a;
+    color:#aaa;
+    text-align:center;
+    padding:25px;
+    border-top: 1px solid #333;
+}
+
+footer p{
+    margin:6px 0;
+}
+
+@media(max-width:600px){
+    .hero h1{ font-size:30px; }
+    .nav-links{ gap:10px; font-size:14px; }
+    .card img{ height:250px; }
+    .cart-actions { flex-direction: column; }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">✨ VibeEra Diwali ✨</div>
+    <div class="nav-links">
+        <a href="login.html" id="loginLink">Login</a>
+        <a href="reviews.html">Reviews</a>
+        <a href="cart.html">Cart</a>
+    </div>
+</header>
+
+<section class="hero">
+    <h1>🪔 Celebrate Diwali with Sparkle & Style 🪔</h1>
+    <p>Discover aesthetic earrings, lockets and fashion accessories curated specially for your festive vibe.</p>
+</section>
+
+<section class="products">
+<h2>Festive Collection</h2>
+<div class="product-grid" id="productGrid">
+    <div class="card">
+        <img src="https://i.postimg.cc/dQRXFf64/Picsart-26-05-27-20-36-10-010.jpg" alt="Copper Iodised Earings">
+        <div class="card-content">
+            <h3>Copper Iodised Earings</h3>
+            <div class="rating">★★★★★</div>
+            <div class="price">₹59</div>
+            <button onclick="addToCart('Copper Iodised Earings',59)">Add To Cart</button>
+        </div>
+    </div>
+
+    <div class="card">
+        <img src="https://i.postimg.cc/qMj5hC9D/Picsart-26-05-27-20-36-35-407.jpg" alt="Pearl Drop Earrings">
+        <div class="card-content">
+            <h3>Pearl Drop Earrings</h3>
+            <div class="rating">★★★★☆</div>
+            <div class="price">₹79</div>
+            <button onclick="addToCart('Pearl Drop Earrings',79)">Add To Cart</button>
+        </div>
+    </div>
+
+    <div class="card">
+        <img src="https://i.postimg.cc/9XPS2kbk/Picsart-26-05-27-20-37-02-678.jpg" alt="Feather Earrings">
+        <div class="card-content">
+            <h3>Feather Earrings</h3>
+            <div class="rating">★★★★★</div>
+            <div class="price">₹99</div>
+            <button onclick="addToCart('Feather Earrings',99)">Add To Cart</button>
+        </div>
+    </div>
+
+    <div class="card">
+        <img src="https://i.postimg.cc/cJVj1yV1/Picsart-26-05-27-20-37-33-515.jpg" alt="Royal Gold Collection">
+        <div class="card-content">
+            <h3>Royal Gold Collection</h3>
+            <div class="rating">★★★★☆</div>
+            <div class="price">₹119</div>
+            <button onclick="addToCart('Royal Gold Charm',119)">Add To Cart</button>
+        </div>
+    </div>
+
+    <div class="card">
+        <img src="https://i.postimg.cc/X7QzGyTD/Picsart-26-05-27-20-38-00-344.jpg" alt="Silver Earrings">
+        <div class="card-content">
+            <h3>Silver Earrings</h3>
+            <div class="rating">★★★★★</div>
+            <div class="price">₹129</div>
+            <button onclick="addToCart('Silver Earrings',129)">Add To Cart</button>
+        </div>
+    </div>
+</div>
+</section>
+
+<!-- Cart Preview & Checkout Form Section -->
+<section class="cart-preview">
+    <h2>Your Cart Preview</h2>
+    <div id="cartItems"></div>
+    <div class="total" id="total">Total: ₹0</div>
+    
+    <!-- User Input Fields -->
+    <div class="checkout-form">
+        <h3>Delivery Details</h3>
+        <div class="form-group">
+            <label for="custName">Full Name *</label>
+            <input type="text" id="custName" placeholder="Enter your name" required>
+        </div>
+        <div class="form-group">
+            <label for="custPhone">Phone Number *</label>
+            <input type="tel" id="custPhone" placeholder="Enter 10-digit mobile number" required>
+        </div>
+        <div class="form-group">
+            <label for="custAddress">Shipping Address *</label>
+            <textarea id="custAddress" rows="3" placeholder="Enter your full delivery address" required></textarea>
+        </div>
+    </div>
+
+    <div class="cart-actions">
+        <a href="cart.html" class="cart-btn">Go To Full Cart Page</a>
+        <button class="checkout-btn" onclick="sendOrderEmail()">Place Order & Save to Database</button>
+    </div>
+</section>
+
+<section class="about">
+<h2>About VibeEra</h2>
+<br>
+<p>VibeEra is an accessories startup founded by Tejashwa Pandey and friends. Our mission is to provide affordable, aesthetic, and trendy accessories for everyone.</p>
+</section>
+
+<footer>
+<p>VibeEra Accessories - Diwali Edition</p>
+<p>📞 +91 8423702403</p>
+<p>📍 Dayanand Nagar, Gorakhpur - 273015</p>
+<p>© 2026 VibeEra. All Rights Reserved.</p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script src="firebase-config.js"></script>
+
+<script>
+emailjs.init("jO44k4Y07o-bKvnph");
+
+let cart = JSON.parse(localStorage.getItem("vibeera_cart")) || [];
+let total = parseInt(localStorage.getItem("vibeera_total")) || 0;
+
+function addToCart(name, price){
+    cart.push({ name: name, price: price, qty: 1 });
+    total += price;
+
+    localStorage.setItem("vibeera_cart", JSON.stringify(cart));
+    localStorage.setItem("vibeera_total", total);
+
+    renderCart();
+    alert(name + " added to cart!");
+}
+
+function renderCart(){
+    const container = document.getElementById("cartItems");
+    if(!container) return;
+
+    if(cart.length === 0){
+        container.innerHTML = "<p style='color:#777;'>Your cart is empty.</p>";
+        document.getElementById("total").innerText = "Total: ₹0";
+        return;
+    }
+
+    container.innerHTML = cart.map(item => `
+        <div class="cart-item">
+            <span>${item.name} (x${item.qty})</span>
+            <span>₹${item.price * (item.qty || 1)}</span>
+        </div>
+    `).join("");
+
+    document.getElementById("total").innerText = "Total: ₹" + total;
+}
+
+async function sendOrderEmail() {
+    if (cart.length === 0) {
+        alert("Your cart is empty!");
+        return;
+    }
+
+    const name = document.getElementById("custName").value.trim();
+    const phone = document.getElementById("custPhone").value.trim();
+    const address = document.getElementById("custAddress").value.trim();
+
+    if(!name || !phone || !address) {
+        alert("Please fill out all delivery details fields.");
+        return;
+    }
+
+    const orderData = {
+        customerName: name,
+        customerPhone: phone,
+        customerAddress: address,
+        items: cart,
+        totalAmount: total,
+        createdAt: new Date().toISOString(),
+        status: "Pending"
+    };
+
+    if(window.DB) {
+        await DB.saveOrder(orderData);
+    }
+
+    let orderDetailsText = cart.map(item => `- ${item.name} (Qty: ${item.qty || 1}) - ₹${item.price * (item.qty || 1)}`).join("
+");
+
+    let templateParams = {
+        customer_name: name,
+        customer_phone: phone,
+        customer_address: address,
+        bill_amt: "₹" + total,
+        total_price: "₹" + total,
+        order_details: orderDetailsText
+    };
+
+    emailjs.send('service_4hl3ksn', 'template_i04e07g', templateParams)
+        .then(function(response) {
+            alert('Order placed & saved to database successfully!');
+            document.getElementById("custName").value = "";
+            document.getElementById("custPhone").value = "";
+            document.getElementById("custAddress").value = "";
+            cart = [];
+            total = 0;
+            localStorage.removeItem("vibeera_cart");
+            localStorage.removeItem("vibeera_total");
+            renderCart();
+        }, function(error) {
+            alert('Order recorded successfully!');
+            console.error('Email error:', error);
+        });
+}
+
+function checkLogin(){
+    if(window.DB) {
+        const user = DB.getLoggedInUser();
+        const loginLink = document.getElementById("loginLink");
+        if(user && loginLink){
+            loginLink.innerText = "Logout (" + (user.name || "User") + ")";
+            loginLink.href = "#";
+            loginLink.onclick = function(e){
+                e.preventDefault();
+                DB.logout();
+                location.reload();
+            };
+        }
+    }
+}
+
+renderCart();
+checkLogin();
+</script>
+
+</body>
+</html>

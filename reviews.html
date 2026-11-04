@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Customer Reviews - VibeEra Diwali</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Segoe UI',sans-serif;
+}
+
+body{
+background:#121212;
+color:#e0e0e0;
+}
+
+header{
+background:#1a1a1a;
+padding:18px 5%;
+display:flex;
+justify-content:space-between;
+align-items:center;
+border-bottom: 1px solid #333;
+}
+
+.logo{
+font-size:28px;
+font-weight:700;
+color: #d4af37;
+}
+
+header a{
+text-decoration:none;
+color:#e0e0e0;
+font-weight:600;
+}
+
+.container{
+max-width:1000px;
+margin:auto;
+padding:30px 20px;
+}
+
+.card{
+background:#1e1e1e;
+padding:25px;
+border-radius:12px;
+border: 1px solid #333;
+box-shadow:0 4px 15px rgba(0,0,0,.5);
+margin-bottom:25px;
+}
+
+h2{
+margin-bottom:15px;
+color: #d4af37;
+}
+
+input,
+textarea,
+select{
+width:100%;
+padding:12px;
+margin:10px 0;
+background:#121212;
+border:1px solid #444;
+color:#fff;
+border-radius:6px;
+}
+
+textarea{
+resize:vertical;
+min-height:120px;
+}
+
+button{
+background:#d4af37;
+color:#121212;
+border:none;
+padding:12px 18px;
+border-radius:6px;
+cursor:pointer;
+font-weight: bold;
+}
+
+button:hover{
+background: #ffdf73;
+}
+
+.review-card{
+background:#242424;
+border-left:4px solid #d4af37;
+padding:15px;
+margin-top:15px;
+border-radius:8px;
+}
+
+.review-name{
+font-weight:bold;
+font-size:18px;
+color: #fff;
+}
+
+.review-rating{
+color:#ffb400;
+margin:5px 0;
+}
+
+.review-date{
+font-size:12px;
+color:#aaa;
+margin-top:8px;
+}
+
+.stats{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+gap:15px;
+margin-bottom:20px;
+}
+
+.stat-box{
+background:#1e1e1e;
+padding:20px;
+border-radius:12px;
+border: 1px solid #333;
+text-align:center;
+box-shadow:0 4px 15px rgba(0,0,0,.5);
+}
+
+.stat-box h3{
+font-size:28px;
+color: #ffdf73;
+}
+
+.no-review{
+text-align:center;
+color:#aaa;
+padding:20px;
+}
+
+footer{
+background:#0a0a0a;
+color:#aaa;
+text-align:center;
+padding:25px;
+margin-top:30px;
+border-top: 1px solid #333;
+}
+
+footer p{
+margin:6px 0;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<div class="logo">🪔 VibeEra Diwali</div>
+<div>
+<a href="index.html">← Back To Shop</a>
+</div>
+</header>
+
+<div class="container">
+
+<div class="stats">
+<div class="stat-box">
+<h3 id="reviewCount">0</h3>
+<p style="color:#ccc;">Total Reviews</p>
+</div>
+<div class="stat-box">
+<h3 id="avgRating">0.0</h3>
+<p style="color:#ccc;">Average Rating</p>
+</div>
+</div>
+
+<!-- REVIEW FORM -->
+<div class="card">
+<h2>Leave A Review</h2>
+<input type="text" id="name" placeholder="Your Name">
+<select id="rating">
+<option value="">Select Rating</option>
+<option value="5">★★★★★ (5)</option>
+<option value="4">★★★★☆ (4)</option>
+<option value="3">★★★☆☆ (3)</option>
+<option value="2">★★☆☆☆ (2)</option>
+<option value="1">★☆☆☆☆ (1)</option>
+</select>
+<textarea id="review" placeholder="Write your review here..."></textarea>
+<button onclick="submitReview()">Submit Review</button>
+</div>
+
+<!-- REVIEWS -->
+<div class="card">
+<h2>Customer Reviews</h2>
+<div id="reviewsContainer"></div>
+</div>
+
+</div>
+
+<footer>
+<p>VibeEra Accessories - Diwali Special</p>
+<p>📞 +91 8423702403</p>
+<p>📍 Dayanand Nagar, Gorakhpur - 273015</p>
+<p>© 2026 VibeEra</p>
+</footer>
+
+<script src="firebase-config.js"></script>
+<script>
+const OWNER_PHONE = "918423702403";
+
+async function submitReview(){
+const name = document.getElementById("name").value.trim();
+const rating = document.getElementById("rating").value;
+const review = document.getElementById("review").value.trim();
+
+if(!name || !rating || !review){
+alert("Please fill all fields.");
+return;
+}
+
+const reviewData = {
+name: name,
+rating: Number(rating),
+review: review,
+date: new Date().toLocaleDateString()
+};
+
+await DB.saveReview(reviewData);
+
+const whatsappMessage = `⭐ NEW CUSTOMER REVIEW
+
+Name: ${name}
+Rating: ${rating}/5
+
+Review:
+${review}
+
+Date:
+${new Date().toLocaleString()}`;
+window.open(`https://wa.me/${OWNER_PHONE}?text=${encodeURIComponent(whatsappMessage)}`, "_blank");
+
+alert("Thank you for your review!");
+document.getElementById("name").value = "";
+document.getElementById("rating").value = "";
+document.getElementById("review").value = "";
+
+loadReviews();
+}
+
+function loadReviews(){
+const reviews = DB.getReviews();
+const container = document.getElementById("reviewsContainer");
+
+document.getElementById("reviewCount").innerText = reviews.length;
+
+if(reviews.length === 0){
+document.getElementById("avgRating").innerText = "0.0";
+container.innerHTML = '<div class="no-review">No reviews yet.</div>';
+return;
+}
+
+const average = reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length;
+document.getElementById("avgRating").innerText = average.toFixed(1);
+
+container.innerHTML = reviews.map(r => `
+<div class="review-card">
+<div class="review-name">${r.name}</div>
+<div class="review-rating">${"★".repeat(r.rating)}${"☆".repeat(5-r.rating)}</div>
+<p style="color:#ddd;">${r.review}</p>
+<div class="review-date">${r.date}</div>
+</div>
+`).join("");
+}
+
+loadReviews();
+</script>
+
+</body>
+</html>

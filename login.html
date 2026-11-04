@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login - VibeEra Diwali</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Segoe UI',sans-serif;
+}
+
+body{
+background:#121212;
+color:#e0e0e0;
+min-height:100vh;
+display:flex;
+flex-direction:column;
+}
+
+header{
+background:#1a1a1a;
+padding:18px 5%;
+display:flex;
+justify-content:space-between;
+align-items:center;
+border-bottom: 1px solid #333;
+}
+
+.logo{
+font-size:28px;
+font-weight:700;
+color: #d4af37;
+}
+
+header a{
+text-decoration:none;
+color:#e0e0e0;
+font-weight:600;
+}
+
+.container{
+flex:1;
+display:flex;
+justify-content:center;
+align-items:center;
+padding:30px;
+}
+
+.login-card{
+background:#1e1e1e;
+width:100%;
+max-width:450px;
+padding:35px;
+border-radius:15px;
+border: 1px solid #333;
+box-shadow:0 5px 20px rgba(0,0,0,.5);
+}
+
+.login-card h2{
+text-align:center;
+margin-bottom:10px;
+color: #d4af37;
+}
+
+.login-card p{
+text-align:center;
+color:#aaa;
+margin-bottom:25px;
+}
+
+.input-group{
+margin-bottom:18px;
+}
+
+.input-group label{
+display:block;
+margin-bottom:6px;
+font-weight:600;
+color:#ccc;
+}
+
+.input-group input{
+width:100%;
+padding:12px;
+background:#121212;
+border:1px solid #444;
+color:#fff;
+border-radius:8px;
+font-size:15px;
+}
+
+.password-box{
+position:relative;
+}
+
+.password-box button{
+position:absolute;
+right:10px;
+top:50%;
+transform:translateY(-50%);
+background:none;
+border:none;
+cursor:pointer;
+font-size:14px;
+color:#d4af37;
+font-weight: bold;
+}
+
+.login-btn{
+width:100%;
+padding:12px;
+border:none;
+background:#d4af37;
+color:#121212;
+font-size:16px;
+font-weight: bold;
+border-radius:8px;
+cursor:pointer;
+margin-top:10px;
+}
+
+.login-btn:hover{
+background:#ffdf73;
+}
+
+.links{
+margin-top:20px;
+text-align:center;
+}
+
+.links a{
+text-decoration:none;
+color:#d4af37;
+font-weight:600;
+}
+
+.demo-box{
+margin-top:20px;
+padding:12px;
+background:#26220d;
+border: 1px solid #443b0c;
+border-radius:8px;
+font-size:14px;
+color:#ffdf73;
+text-align:center;
+}
+
+footer{
+background:#0a0a0a;
+color:#aaa;
+text-align:center;
+padding:20px;
+border-top: 1px solid #333;
+}
+
+footer p{
+margin:5px 0;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<div class="logo">🪔 VibeEra Diwali</div>
+<a href="index.html">← Continue Shopping</a>
+</header>
+
+<div class="container">
+<div class="login-card">
+<h2>Welcome Back</h2>
+<p>Login to access your VibeEra account</p>
+
+<form id="loginForm">
+<div class="input-group">
+<label>Email Address</label>
+<input type="email" id="loginEmail" placeholder="Enter your email" required>
+</div>
+
+<div class="input-group">
+<label>Password</label>
+<div class="password-box">
+<input type="password" id="loginPassword" placeholder="Enter your password" required>
+<button type="button" onclick="togglePassword()" id="toggleBtn">Show</button>
+</div>
+</div>
+
+<button type="submit" class="login-btn">Login</button>
+</form>
+
+<div class="links">
+<p>Don't have an account? <a href="register.html">Register Now</a></p>
+</div>
+
+<div class="demo-box">
+🛍️ Login to place orders and manage your cart.
+</div>
+</div>
+</div>
+
+<footer>
+<p>VibeEra Accessories - Diwali Special</p>
+<p>📞 +91 8423702403</p>
+<p>📍 Dayanand Nagar, Gorakhpur - 273015</p>
+<p>© 2026 VibeEra</p>
+</footer>
+
+<script src="firebase-config.js"></script>
+<script>
+function togglePassword(){
+const passwordField = document.getElementById("loginPassword");
+const toggleBtn = document.getElementById("toggleBtn");
+if(passwordField.type === "password"){
+passwordField.type = "text";
+toggleBtn.innerText = "Hide";
+} else {
+passwordField.type = "password";
+toggleBtn.innerText = "Show";
+}
+}
+
+document.getElementById("loginForm").addEventListener("submit", async function(e){
+e.preventDefault();
+const email = document.getElementById("loginEmail").value.trim();
+const password = document.getElementById("loginPassword").value;
+
+const res = await DB.loginUser(email, password);
+if(!res.success) {
+alert(res.message);
+return;
+}
+
+alert("Welcome back, " + res.user.name + "!");
+window.location.href = "index.html";
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cart - VibeEra Diwali</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Segoe UI',sans-serif;
+}
+
+body{
+background:#121212;
+color:#e0e0e0;
+}
+
+header{
+background:#1a1a1a;
+padding:18px 5%;
+display:flex;
+justify-content:space-between;
+align-items:center;
+border-bottom: 1px solid #333;
+box-shadow:0 4px 15px rgba(212,175,55,0.1);
+}
+
+.logo{
+font-size:28px;
+font-weight:700;
+color: #d4af37;
+}
+
+header a{
+text-decoration:none;
+color:#e0e0e0;
+font-weight:600;
+}
+
+header a:hover {
+color: #d4af37;
+}
+
+.container{
+max-width:1100px;
+margin:auto;
+padding:30px 20px;
+}
+
+.card{
+background:#1e1e1e;
+padding:25px;
+border-radius:12px;
+border: 1px solid #333;
+box-shadow:0 4px 15px rgba(0,0,0,.5);
+margin-bottom:25px;
+}
+
+h2{
+margin-bottom:15px;
+color: #d4af37;
+}
+
+.cart-item{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:15px 0;
+border-bottom:1px solid #333;
+}
+
+.item-info{
+display:flex;
+flex-direction:column;
+}
+
+.item-name{
+font-weight:600;
+color: #fff;
+}
+
+.qty-controls{
+display:flex;
+align-items:center;
+gap:8px;
+}
+
+.qty-btn{
+width:32px;
+height:32px;
+border:none;
+background:#d4af37;
+color:#121212;
+cursor:pointer;
+border-radius:5px;
+font-weight: bold;
+}
+
+.remove-btn{
+background:#dc3545;
+color:white;
+border:none;
+padding:8px 12px;
+cursor:pointer;
+border-radius:5px;
+}
+
+.total{
+font-size:24px;
+font-weight:bold;
+margin-top:15px;
+color: #ffdf73;
+}
+
+input,textarea{
+width:100%;
+padding:12px;
+margin:10px 0;
+background:#121212;
+border:1px solid #444;
+color:#fff;
+border-radius:6px;
+}
+
+button{
+border:none;
+padding:12px 18px;
+background:#d4af37;
+color:#121212;
+cursor:pointer;
+border-radius:6px;
+font-weight: bold;
+}
+
+button:hover{
+background: #ffdf73;
+}
+
+.payment-box{
+background:#26220d;
+padding:20px;
+border-radius:10px;
+border:2px solid #d4af37;
+text-align:center;
+}
+
+.upi{
+font-size:22px;
+font-weight:bold;
+background:#121212;
+color: #ffdf73;
+padding:12px;
+border-radius:8px;
+margin:15px 0;
+border: 1px solid #444;
+}
+
+.success{
+background:#28a745 !important;
+color: white !important;
+}
+
+.cod{
+background:#00b894 !important;
+color: white !important;
+}
+
+.invoice{
+display:none;
+}
+
+.empty{
+text-align:center;
+padding:30px;
+color:#aaa;
+}
+
+footer{
+background:#0a0a0a;
+color:#aaa;
+text-align:center;
+padding:25px;
+margin-top:30px;
+border-top: 1px solid #333;
+}
+
+footer p{
+margin:6px 0;
+}
+
+@media(max-width:700px){
+.cart-item{
+flex-direction:column;
+align-items:flex-start;
+gap:10px;
+}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<div class="logo">🪔 VibeEra Diwali</div>
+<a href="index.html">← Continue Shopping</a>
+</header>
+
+<div class="container">
+
+<!-- CART -->
+<div class="card">
+<h2>Your Cart</h2>
+<div id="cartItems"></div>
+<div id="emptyCart" class="empty" style="display:none;">
+<h3>Your cart is empty</h3>
+<br>
+<a href="index.html" style="color:#d4af37;">Start Shopping</a>
+</div>
+<div class="total" id="total">
+Total: ₹0
+</div>
+</div>
+
+<!-- BILLING -->
+<div class="card" id="billingSection">
+<h2>Billing Details</h2>
+<input type="text" id="name" placeholder="Full Name">
+<input type="text" id="phone" placeholder="Phone Number">
+<textarea id="address" rows="4" placeholder="Delivery Address"></textarea>
+<button onclick="placeOrder()">Proceed To Payment</button>
+</div>
+
+<!-- PAYMENT -->
+<div class="card" id="paymentSection" style="display:none;">
+<h2>Payment</h2>
+<div class="payment-box">
+<h3 style="color:#d4af37;">Pay Using UPI</h3>
+<div class="upi">8318463749@fam</div>
+<p style="color:#ccc;">Amount Payable: <strong id="payAmount" style="color:#ffdf73;">₹0</strong></p>
+<br>
+<button class="cod" onclick="contactCOD()">Cash On Delivery Request</button>
+<br><br>
+<button class="success" onclick="generateInvoice()">✅ Payment Completed</button>
+</div>
+</div>
+
+<!-- INVOICE -->
+<div class="card invoice" id="invoiceSection">
+<h2>Order Invoice</h2>
+<p id="invName"></p>
+<p id="invPhone"></p>
+<p id="invAddress"></p>
+<hr style="margin:15px 0; border-color:#333;">
+<div id="invItems"></div>
+<h3 id="invTotal" style="color:#ffdf73; margin-top:10px;"></h3>
+<br>
+<button onclick="window.print()">Print Invoice</button>
+<button style="background:#444; color:#fff;" onclick="location.href='index.html'">Continue Shopping</button>
+</div>
+
+</div>
+
+<footer>
+<p>VibeEra Accessories - Diwali Special</p>
+<p>📞 +91 8423702403</p>
+<p>📍 Dayanand Nagar, Gorakhpur - 273015</p>
+<p>© 2026 VibeEra</p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script src="firebase-config.js"></script>
+
+<script>
+emailjs.init("jO44k4Y07o-bKvnph");
+const OWNER_PHONE = "918423702403";
+
+let cart = JSON.parse(localStorage.getItem("vibeera_cart")) || [];
+let customer = {};
+
+function calculateTotal(){
+return cart.reduce((sum, item) => sum + (item.price * (item.qty || 1)), 0);
+}
+
+function renderCart(){
+const cartItems = document.getElementById("cartItems");
+const emptyCart = document.getElementById("emptyCart");
+
+if(cart.length === 0){
+cartItems.innerHTML = "";
+emptyCart.style.display = "block";
+document.getElementById("total").innerText = "Total: ₹0";
+return;
+}
+
+emptyCart.style.display = "none";
+cartItems.innerHTML = cart.map((item, index) => `
+<div class="cart-item">
+<div class="item-info">
+<div class="item-name">${item.name}</div>
+<div style="color:#aaa;">₹${item.price}</div>
+</div>
+<div class="qty-controls">
+<button class="qty-btn" onclick="changeQty(${index},-1)">-</button>
+<span style="color:#fff;">${item.qty || 1}</span>
+<button class="qty-btn" onclick="changeQty(${index},1)">+</button>
+<button class="remove-btn" onclick="removeItem(${index})">Remove</button>
+</div>
+</div>
+`).join("");
+
+document.getElementById("total").innerText = "Total: ₹" + calculateTotal();
+}
+
+function changeQty(index, value){
+if(!cart[index].qty) cart[index].qty = 1;
+cart[index].qty += value;
+if(cart[index].qty < 1) cart[index].qty = 1;
+saveCart();
+}
+
+function removeItem(index){
+cart.splice(index, 1);
+saveCart();
+}
+
+function saveCart(){
+localStorage.setItem("vibeera_cart", JSON.stringify(cart));
+localStorage.setItem("vibeera_total", calculateTotal());
+renderCart();
+}
+
+function placeOrder(){
+if(!DB.getLoggedInUser()){
+alert("Please login first.");
+location.href = "login.html";
+return;
+}
+
+const name = document.getElementById("name").value.trim();
+const phone = document.getElementById("phone").value.trim();
+const address = document.getElementById("address").value.trim();
+
+if(!name || !phone || !address){
+alert("Please fill all details.");
+return;
+}
+
+customer = { name, phone, address };
+document.getElementById("paymentSection").style.display = "block";
+document.getElementById("payAmount").innerText = "₹" + calculateTotal();
+
+window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+}
+
+function contactCOD(){
+window.open(
+`https://wa.me/918423702403?text=${encodeURIComponent(
+`Hello, I want Cash On Delivery (Diwali Order).
+
+Name: ${customer.name || ""}
+Phone: ${customer.phone || ""}
+
+Order Amount:
+₹${calculateTotal()}`
+)}`
+);
+}
+
+async function generateInvoice(){
+const orderItemsText = cart.map(item => `- ${item.name} (Qty: ${item.qty || 1}) - ₹${item.price * (item.qty || 1)}`).join("
+");
+
+// Save to Database
+await DB.saveOrder({
+    customerName: customer.name,
+    customerPhone: customer.phone,
+    customerAddress: customer.address,
+    items: cart,
+    totalAmount: calculateTotal(),
+    createdAt: new Date().toISOString()
+});
+
+let templateParams = {
+customer_name: customer.name,
+customer_phone: customer.phone,
+customer_address: customer.address,
+bill_amt: "₹" + calculateTotal(),
+total_price: "₹" + calculateTotal(),
+order_details: orderItemsText
+};
+
+emailjs.send("service_4hl3ksn", "template_i04e07g", templateParams);
+
+const whatsappMessage = `🪔 NEW DIWALI ORDER 🪔
+
+Customer: ${customer.name}
+Phone: ${customer.phone}
+Address: ${customer.address}
+
+Items:
+${orderItemsText}
+
+Total: ₹${calculateTotal()}`;
+
+window.open(`https://wa.me/${OWNER_PHONE}?text=${encodeURIComponent(whatsappMessage)}`);
+
+document.getElementById("invoiceSection").style.display = "block";
+document.getElementById("invName").innerText = "Name: " + customer.name;
+document.getElementById("invPhone").innerText = "Phone: " + customer.phone;
+document.getElementById("invAddress").innerText = "Address: " + customer.address;
+document.getElementById("invItems").innerHTML = cart.map(item => `<p style="color:#ccc;">${item.name} x ${item.qty || 1} = ₹${item.price * (item.qty || 1)}</p>`).join("");
+document.getElementById("invTotal").innerText = "Total: ₹" + calculateTotal();
+
+localStorage.removeItem("vibeera_cart");
+localStorage.removeItem("vibeera_total");
+}
+
+cart = cart.map(item => ({ ...item, qty: item.qty || 1 }));
+renderCart();
+</script>
+
+</body>
+</html>
